@@ -1,0 +1,100 @@
+body{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.select-modal{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay{
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  background : black;
+  opacity:0.6;
+}
+
+.selection-container{
+  width: 50%;
+  height: 50%;
+  text-align: center;
+  border: 1px solid #9e9e9e59;
+  border-radius: 2%;
+  box-shadow: 0px 8px 8px -6px;
+  background: #ffff;
+  position: relative;
+  z-index: 3;
+}
+
+h1{
+  color: #696565;
+}
+
+.selection-button-container{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.selection-button{
+  width: 30%;
+  height: 50%;
+  outline: none;
+  border: 1px solid #9e9e9e59;
+  text-transform: uppercase;
+  font-size: 60px;
+  border-radius: 8%;
+  color: #696565;
+  box-shadow: 0px 4px 4px -3px;
+}
+.selection-button:hover { color: #4c4b4b}
+
+.selection-button:active {
+  box-shadow: 0px 2px 2px -2px;
+  transform: translateY(4px);
+}
+
+.tic-tak-toe-button{
+  width: 33.33%;
+  height: 33.33%;
+  outline: none;
+  border: 1px solid #9e9e9e59;
+  text-transform: uppercase;
+  font-size: 60px;
+  color: #696565;
+}
+
+.tic-tak-toe-button:active{
+  box-shadow: 0px 2px 2px -2px;
+  transform: translateY(1px);
+}
+
+.game-container{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-board{
+  width: 60%;
+  height: 60%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+

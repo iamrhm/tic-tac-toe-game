@@ -1,0 +1,23 @@
+{
+  "name": "eticket-sell",
+  "version": "1.0.0",
+  "description": "eTicket-sell",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudoinit/eTicket-sell.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sudoinit/eTicket-sell/issues"
+  },
+  "homepage": "https://github.com/sudoinit/eTicket-sell#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4"
+  }
+}
