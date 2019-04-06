@@ -2,6 +2,8 @@ var gameData = {
   username: null,
   gameScore: null,
 }
+var dynamicTable = [];
+
 var huSelection, cpuSelection, turn;
 var ticTakToeBoard = []
 
@@ -91,68 +93,70 @@ function createBoard() {
 
 function setUserIput(inputPosition) {
   updateGameBoard(inputPosition, huSelection)
-  if(!checkGameComplited(ticTakToeBoard,huSelection))
+  if(!checkGameComplited(ticTakToeBoard,huSelection).result)
     setCpuInput()
   else{
     //End Game Logic
-    console.log( 'Hooman')
+    console.log( 'Winer is',checkGameComplited(ticTakToeBoard,huSelection).winner)
   }
 }
 
 function setCpuInput() {
   var cpuMove = findOptimalPosition(ticTakToeBoard.slice(), cpuSelection)
-  console.log(cpuMove)
   updateGameBoard(cpuMove.index,cpuSelection)
-  if(checkGameComplited(ticTakToeBoard,cpuSelection)){
+  if(checkGameComplited(ticTakToeBoard,cpuSelection).result){
     //End Game Logic
-    console.log( 'Machine')
-  }else{
-    // wait for user input
+    console.log( 'Winer is',checkGameComplited(ticTakToeBoard,cpuSelection).winner)
   }
 }
 
 function findOptimalPosition(board,selection){
-  var result ={
-    index:'',
-    score:''
-  };
-  var results = [];
-  var availablePositions = getAvailablePositions(board);
-
-  if(checkWinner(board,huSelection)){
-    result = {
-      index: -1,
-      score: -10
+  var isChecked = isAlreadyChecked(board.slice(),selection)
+  if(isChecked !== null ){
+    return isChecked
+  }
+  else{
+    var result ={
+      index:'',
+      score:''
+    };
+    var results = [];
+    var availablePositions = getAvailablePositions(board);
+    if(checkWinner(board,huSelection)){
+      result = {
+        index: -1,
+        score: -10
+      }
+      return result
+    }else if(checkWinner(board,cpuSelection)){
+      result = {
+        index: -1,
+        score: 10
+      }
+      return result
+    }else if(availablePositions.length === 0 ){
+      result = {
+        index: -1,
+        score: 0
+      }
+      return result
     }
-    return result
-  }else if(checkWinner(board,cpuSelection)){
-    result = {
-      index: -1,
-      score: 10
+    for(var i=0;i<availablePositions.length;i++){
+      var move={}
+      move.index = board[availablePositions[i]];
+      board[availablePositions[i]] = selection;
+      if(selection === cpuSelection){
+        move.score = findOptimalPosition(board,huSelection).score
+      }else{
+        move.score = findOptimalPosition(board,cpuSelection).score
+      }
+      board[availablePositions[i]] = move.index;
+      results.push(move)
     }
-    return result
-  }else if(availablePositions.length === 0 ){
-    result = {
-      index: -1,
-      score: 0
-    }
+    result = bestMove(results,selection)
+    saveMoves(board.slice(),selection,result) 
     return result
   }
-
-  for(var i=0;i<availablePositions.length;i++){
-    var move={}
-    move.index = board[availablePositions[i]];
-    board[availablePositions[i]] = selection;
-    if(selection === cpuSelection){
-      move.score = findOptimalPosition(board,huSelection).score
-    }else{
-      move.score = findOptimalPosition(board,cpuSelection).score
-    }
-    board[availablePositions[i]] = move.index;
-    results.push(move)
-  }
-  result = bestMove(results,selection)
-  return result
 }
 
 function getAvailablePositions(board){
@@ -191,41 +195,23 @@ function checkWinner(board,selection) {
 
 }
 
-function checkRow(board) {
-  for (var i = 0; i < board.length; i = +3) {
-    if (board[i] === board[i + 1] && board[i + 1] === board[i + 2])
-      return true
-    else
-      return false
-  }
-}
-
-function checkColumn(board) {
-  for (var i = 0; i < 3; i++) {
-    if (board[i] === board[i + 3] && board[i + 3] === board[i + 6])
-      return true;
-    else
-      return false
-  }
-}
-
-function checkDiagonal(board) {
-  if (board[0] === board[4] && board[4] === board[8]) 
-    return true
-  else if (board[2] === board[4] && board[4] === board[6])
-    return true;
-  else
-    return false
-}
-
 function checkGameComplited(ticTakToeBoard,selection){
   if(checkWinner(ticTakToeBoard,selection))
-    return true
+    return {
+      result : true,
+      winner : selection === huSelection ? 'Hooman' : 'Machine'
+    }
   else{
     if(getAvailablePositions(ticTakToeBoard).length === 0){
-      return true
+      return {
+        result : true,
+        winner : 'draw'
+      }
     }
-    return false
+    return {
+      result : false,
+      winner : ''
+    }
   }
 }
 
@@ -249,4 +235,33 @@ function bestMove(results,selection){
     }
   }
   return results[moveIndex];
+}
+
+function saveMoves(newBoard,selection,scoreData){
+  var string = convertArrayToString(newBoard.slice());
+  var data = {
+    pattern : string,
+    selection : selection,
+    scoreData : scoreData
+  }
+  dynamicTable.push(data)
+}
+
+function convertArrayToString(array){
+  var string = ''
+  function joinString(data,string){
+    return data + '' + string 
+  }
+  string = array.reduce(joinString,string)
+  return string
+}
+
+function isAlreadyChecked(newBoard,selection){
+  var newPattern = convertArrayToString(newBoard.slice())
+  var filteredTable = dynamicTable.filter((data)=>(data.pattern === newPattern && data.selection === selection))
+
+  if(filteredTable.length > 0){
+    return  filteredTable[0].scoreData
+  }
+  return null
 }
