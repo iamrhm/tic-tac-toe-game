@@ -2,6 +2,12 @@ var gameData = {
   username: null,
   gameScore: null,
 }
+var msg = {
+  cpuWin : 'I win',
+  humanWin : 'You win',
+  draw : 'Draw'
+}
+
 var dynamicTable = [];
 
 var huSelection, cpuSelection, turn;
@@ -68,6 +74,9 @@ function setUserPreference(selection) {
     cpuSelection = 'X'
     hideModal()
   }
+  updateDisplay(
+    `You : ${huSelection} & Me: ${cpuSelection}`
+    )
 }
 
 function hideModal() {
@@ -89,14 +98,17 @@ function createBoard() {
   if (huSelection === 'O') {
     setCpuInput()
   }
+
+  updateDisplay(``)
 }
 
 function setUserIput(inputPosition) {
   updateGameBoard(inputPosition, huSelection)
-  if(!checkGameComplited(ticTakToeBoard,huSelection).result)
+  if(!checkGameComplited(ticTakToeBoard,huSelection).result){
     setCpuInput()
+  } 
   else{
-    //End Game Logic
+    updateDisplay(checkGameComplited(ticTakToeBoard,cpuSelection).winner)
     console.log( 'Winer is',checkGameComplited(ticTakToeBoard,huSelection).winner)
   }
 }
@@ -105,7 +117,7 @@ function setCpuInput() {
   var cpuMove = findOptimalPosition(ticTakToeBoard.slice(), cpuSelection)
   updateGameBoard(cpuMove.index,cpuSelection)
   if(checkGameComplited(ticTakToeBoard,cpuSelection).result){
-    //End Game Logic
+    updateDisplay(checkGameComplited(ticTakToeBoard,cpuSelection).winner)
     console.log( 'Winer is',checkGameComplited(ticTakToeBoard,cpuSelection).winner)
   }
 }
@@ -196,16 +208,19 @@ function checkWinner(board,selection) {
 }
 
 function checkGameComplited(ticTakToeBoard,selection){
-  if(checkWinner(ticTakToeBoard,selection))
+  if(checkWinner(ticTakToeBoard,selection)){
+    document.querySelector('.game-board').removeEventListener('click',clickEvent)
     return {
       result : true,
-      winner : selection === huSelection ? 'Hooman' : 'Machine'
+      winner : selection === huSelection ? msg.humanWin : msg.cpuWin
     }
+  }
   else{
     if(getAvailablePositions(ticTakToeBoard).length === 0){
+      document.querySelector('.game-board').removeEventListener('click',clickEvent)
       return {
         result : true,
-        winner : 'draw'
+        winner : msg.draw
       }
     }
     return {
@@ -264,4 +279,27 @@ function isAlreadyChecked(newBoard,selection){
     return  filteredTable[0].scoreData
   }
   return null
+}
+
+function updateDisplay(displayMsg){
+  var displayPanel = document.querySelectorAll('.dynamic-display');
+  var displayCard = document.querySelector('.display-card')
+  var display = document.querySelector('.display')
+  if(displayMsg === msg.cpuWin ||displayMsg === msg.humanWin || displayMsg === msg.draw ){
+    var span = document.querySelector('#removeable-span')
+    display.removeChild(span) 
+    span = document.createElement('SPAN')
+    span.innerHTML = 'Press To Restart'
+    display.appendChild(span)
+    displayCard.addEventListener('click',function(){
+      window.location.reload()
+    })
+  }
+  displayPanel[0].innerHTML = displayMsg;
+  displayCard.setAttribute('class','display-card rotate')
+  display.setAttribute('class','display display-flip')
+  setTimeout(function(){
+    display.classList.remove("display-flip")
+    displayCard.classList.remove("rotate")
+  },4000)
 }
