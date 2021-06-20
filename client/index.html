@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body id="app-body">
+  <div class="nav-bar">
+    <ul class="menu">
+      <li><a href='#'>Home</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </div>
+
+  <div class="inputs-container">
+    <div class='registration-form-container'>
+      <form class='registration-input-form' id="registrationform">
+        <div>
+          <input type='text' value='' name='username' required=""/>
+          <label>
+            User Name
+          </label>
+        </div>
+        <div>
+          <input type='password' value='' name='password' required=""/>
+          <label>
+            Password
+          </label>
+        </div>
+        <span>
+        <button  type='submit' class='submit-button'>
+            Login
+        </button>
+        <p><a href='./signup.html'>SignUp!!</a></p>
+        </span>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

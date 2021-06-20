@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="game.css">
+  <script src="game.js"></script>
+</head>
+
+<body>
+<div class='container'>
+  <div class="select-modal">
+    <div class='modal-overlay'></div>
+    <div class='selection-container'>
+      <h1>Chose</h1>
+      <div class='selection-button-container'>
+        <button type="button" class="selection-button" value='X'>
+          X
+        </button>
+        <button type="button" class="selection-button" value='O'>
+          O
+        </button>
+      </div>
+    </div>
+
+
+  </div>
+  <div class='game-container'>
+    <button class = 'display-card'>
+      <div class='display'>
+        <span id='removeable-span'>Beat Me if You Can</span>
+        <div class='dynamic-display'></div>
+      </div>
+    </button>
+    <div class='game-board'></div>
+  </div>
+</div>
+</body>
+
+</html>
